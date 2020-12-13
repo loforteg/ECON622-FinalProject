@@ -5,8 +5,23 @@ module Step2
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
 
+"""
+    Relies on step1 (either with simple grid search or endogenous) and finds
+    stationary distribution.
+"""
+
 # Define function for inverse of policy function a^{-1}
 function pol_inv(A, pol_func, aprime, eprime)
+
+    """
+    Function that finds the inverse of the optimal policy function.
+    Inputs:
+        - A: set of assets
+        - pol_func: optimal policy function
+        - aprime: assets in the next period
+        - eprime: exogenous state variable in the next period
+    Output: inverse of the policy function
+    """
 
     # if a' < minimum value of policy function, then a must be a_lowerbar
     if minimum(pol_func[:, eprime]) > A[aprime]
@@ -31,6 +46,18 @@ end
 
 # Define function for Step2
 function step2(A, E, Π, pol_func; tol = 0.01, maxT = 600)
+
+    """
+    Function that finds the stationary distribution Ψ.
+    Relies on pol_inv in the code.
+    Inputs:
+        - A: set of assets
+        - E: set of exogenous shocks
+        - Π: transition matrix
+        - pol_func: optimal policy function
+    Output:
+        - F_update: stationary distribution Ψ
+    """
 
     # retrieve dimensions
     a_size = length(A)
