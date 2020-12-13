@@ -7,7 +7,7 @@ Final Project for the course ECON622. Replication of Huggett (1993), with simple
 
 [Computation](#computation)
 
-[Files description](#filesdescription)
+[Files description](#files-description)
 
 [References](#references)
 
