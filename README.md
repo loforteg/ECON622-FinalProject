@@ -2,7 +2,14 @@
 Final Project for the course ECON622. Replication of Huggett (1993), with simple grid search and endogenous grid search method.
 
 ----
+#### Table of contents
+[Model](#model)
 
+[Computation](#computation)
+
+[References](#references)
+
+----
 ## Model
 The model encompasses the following elements:
 * a continuum of agents with mass 1;
@@ -31,7 +38,6 @@ A *stationary equilibrium* is defined as c(x), a(x), q, and ![formula](https://r
 * ![formula](https://render.githubusercontent.com/render/math?math=\psi) is stationary
 
 ----
-
 ## Computation
 The computational procedure is broken down in 3 steps:
 1. Given q, compute the optimal policy function a(x;q) by iterating
