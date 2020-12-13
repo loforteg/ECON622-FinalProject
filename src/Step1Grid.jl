@@ -5,9 +5,27 @@ module Step1Grid
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
 
+"""
+    Performs a grid search to find the optimal policy function.
+    Takes price q as given.
+"""
+
 # Define the function for Step1: iteration to find the optimal policy function
 
 function step1(A, E, Π, q, β, σ; v_guess = 0.0, maxT = 600, tol = 0.01)
+
+    """
+    Function that finds the optimal policy function for a given price q.
+    Inputs:
+        - A: set of possible assets (endog. state var.)
+        - E: set of exogenous shocks (exog. state var.)
+        - Π: transition matrix
+        - q: price
+        - β: discount factor
+        - σ: preferences parameter
+    Output:
+        - pol_func: optimal policy function
+    """
 
     a_size = length(A)
     e_size = size(E)[1]
