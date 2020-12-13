@@ -2,7 +2,7 @@
 Final Project for the course ECON622. Replication of Huggett (1993), with simple grid search and endogenous grid search method.
 
 ----
-#### Table of contents
+### Table of contents
 [Model](#model)
 
 [Computation](#computation)
@@ -51,5 +51,5 @@ In this repository, I am going to perform the first step in two different ways a
 
 
 ----
-#### References
+## References
 Huggett, Mark, *The risk-free rate in heterogeneous-agent incomplete-insurance economies*, Journal of economic Dynamics and Control 17.5-6 (1993): 953-969.
