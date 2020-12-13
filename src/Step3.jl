@@ -5,8 +5,23 @@ module Step3
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
 
+"""
+    Relies on step2 and finds the optimal price.
+"""
+
 # Define function that computes the market for savings
 function mktclearing(A, E, pol_func, F_update)
+
+    """
+    Function that computes market clearing conditions.
+    Inputs:
+        - A: set of assets
+        - E: set of shocks
+        - pol_func: optimal policy function
+        - F_update: stationary distribution function Ψ
+    Output:
+        - market: demand for assets
+    """
 
     # retrieve dimensions
     a_size = length(A)
@@ -31,6 +46,21 @@ end
 # Define function for Step3
 function step3(A, E, Π, q0, β, σ; maxT = 100, tol_iterations = 0.01,
                 tol_market = 0.0025, tol_q = 0.001, weight = 0.5)
+
+    """
+    Function that finds the optimal price q.
+    Relies on market in the update procedure.
+    Inputs:
+        - A: set of assets
+        - E: set of shocks
+        - q0: guess price
+        - β: discount factor
+        - σ: preference parameter
+    Output:
+        - q: optimal price
+        - policy: optimal policy
+        - Ψ: stationary distribution Ψ
+    """
 
     # check q > β
     @assert q0 > β
