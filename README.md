@@ -67,6 +67,7 @@ I compute it as the element in the grid of A such that `pol_func(A, E)` is the c
 However, note some adjustments:
   * if a' is smaller than all the values of the policy function, then we set a to ![formula](https://render.githubusercontent.com/render/math?math=\underline{a});
   * if e' is the best shock and a' is bigger than any value of the optimal policy function, then we set a to the endogenous ![formula](https://render.githubusercontent.com/render/math?math=\overline{a}) corresponding to the intersection with the 45° line.
+
 Once I have defined the inverse of the policy function, I generate the function `step2` which finds the stationary distribution ![formula](https://render.githubusercontent.com/render/math?math=\Psi).
 As stated above, the code computes the updated distribution using the initial guess distribution, the inverse of the policy function, and the transition probabilities.
 The code then iterates over the updated distributions until they converge to the same value.
