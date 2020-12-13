@@ -55,7 +55,6 @@ In this repository, I am going to perform the first step in two different ways a
 ## Files description
 In the src folder you can find the following files:
 * [Step1Grid.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step1Grid.jl): this file performs the first step described in the Computation section using a simple grid search method.
-
 Specifically, in each point of the grid A in which consumption is weakly positive, I compute the value function V and then find the value of a' that corresponds to the maximum value function attainable by the individual starting from a given point in the grid.
 When consumption is negative, I replace the value function with - ![formula](https://render.githubusercontent.com/render/math?math=\infty).
 I then repeat the process until convergence of the maximum value function, that is convergence of the policy function.
@@ -63,7 +62,6 @@ I then repeat the process until convergence of the maximum value function, that 
 * Step1EndGrid.jl: this file performs the first step described in the Computation section using an endogenous grid search method.
 
 * [Step2.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step2.jl): this file performs the second step described in the Computation section.
-
 In practice, I first define function `pol_inv` which computes the inverse of the policy function.
 I compute it as the element in the grid of A such that `pol_func(A, E)` is the closest to a'.
 However, note some adjustments:
@@ -79,7 +77,6 @@ In practice, the initial guess cumulative distribution function is given by a ra
 Summing across the two values of e then gives 1.
 
 * [Step3.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step3.jl): this file performs the third step described in the Computation section.
-
 First, define function `mktclearing` that computes the demand for assets using the gridpoints, the policy function, and the stationary distribution as inputs.
 Recall that, for market clearing, we only need the demand for assets to be equal to 0.
 Then, define the function `step3` that, starting from a guess initial value of prices, solves for the previous two steps and iterates up until the market for assets sums to zero.
