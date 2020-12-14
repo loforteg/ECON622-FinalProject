@@ -1,5 +1,5 @@
 # ECON622-FinalProject
-Final Project for the course ECON622. Replication of Huggett (1993), with simple grid search and endogenous grid search method.
+Final Project for the course ECON622. Replication of Huggett (1993) ([paper](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Huggett%201993)), with simple grid search and endogenous grid search method.
 
 ----
 ### Table of contents
@@ -65,7 +65,7 @@ Specifically, given an initial guess for the policy function, for any pair of a'
 Finally, from the budget constraint I derive the optimal choice of assets in the current period.
 I use this solution to update the initial guess, as long as I get convergence of the policy function.
 
-For more information on endogenenous grid method, please refer to the following notes.
+For more information on endogenenous grid method, please refer to the following [notes](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Notes%20on%20Endogenous%20Grid%20Method.pdf).
 
 * [Step2.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step2.jl): this file performs the second step described in the Computation section.
 In practice, I first define function `pol_inv` which computes the inverse of the policy function.
