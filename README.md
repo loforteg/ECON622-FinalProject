@@ -1,5 +1,5 @@
 # ECON622-FinalProject
-Final Project for the course ECON622. Replication of Huggett (1993), with simple grid search and endogenous grid search method.
+Final Project for the course ECON622. Replication of Huggett (1993) ([paper](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Huggett%201993.pdf)), with simple grid search and endogenous grid search method.
 
 ----
 ### Table of contents
@@ -59,11 +59,13 @@ Specifically, in each point of the grid A in which consumption is weakly positiv
 When consumption is negative, I replace the value function with - ![formula](https://render.githubusercontent.com/render/math?math=\infty).
 I then repeat the process until convergence of the maximum value function, that is convergence of the policy function.
 
-* Step1EndGrid.jl: this file performs the first step described in the Computation section using an endogenous grid search method.
+* [Step1EndGrid.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step1EndGrid.jl): this file performs the first step described in the Computation section using an endogenous grid search method.
 The essential idea of the endogenous grid method is that I first need to construct a grid of next period's asset holdings and use that, rather than the grid of current assets holdings, in order to find the optimal policy function.
 Specifically, given an initial guess for the policy function, for any pair of a' and e, I construct the right hand side of the Euler Equation and use it to solve for the value of consumption that satisfies the Euler Equation.
 Finally, from the budget constraint I derive the optimal choice of assets in the current period.
 I use this solution to update the initial guess, as long as I get convergence of the policy function.
+
+For more information on endogenenous grid method, please refer to the following [notes](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Notes%20on%20Endogenous%20Grid%20Method.pdf).
 
 * [Step2.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step2.jl): this file performs the second step described in the Computation section.
 In practice, I first define function `pol_inv` which computes the inverse of the policy function.
@@ -88,6 +90,9 @@ Then, define the function `step3` that, starting from a guess initial value of p
 I try not to have a "jumpy" update in prices by using the following updating procedure:
   * if there is excess demand, the new price is equal to the old price plus a fraction of the tolerance level to determine that there is no excess demand;
   * if there is excess supply, the new price is equal to the old price diminished by the tolerance level.
+  
+  
+* [Replication.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Replication.jl): this file replicates the main table and figures reported in Huggett (1993).
 
 
 ----
