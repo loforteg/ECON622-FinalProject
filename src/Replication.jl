@@ -1,8 +1,5 @@
 # Replicate Huggett (1993)
 
-include("Step3.jl")
-
-
 # --------------------------------------------------------------------------- #
 # Set parameters:
 β = 0.9932
@@ -110,3 +107,9 @@ p3 = plot(A, F, linewidth = 2, title = "Stationary distribution",
 # Constrained plot for Stationary Distribution Ψ
 p3B = plot(A[1:aUB+20], F[1:aUB+20], linewidth = 2,
     title = "Stationary distribution", label = ["eL" "eH"], legend =:topleft)
+
+
+include("Step3.jl")
+include("Step2.jl")
+include("Step1.jl")
+include("Step1EndGrid.jl")
