@@ -9,6 +9,8 @@ Final Project for the course ECON622. Replication of Huggett (1993) ([paper](htt
 
 [Files description](#files-description)
 
+[Tests](#tests)
+
 [References](#references)
 
 ----
@@ -93,6 +95,11 @@ I try not to have a "jumpy" update in prices by using the following updating pro
   
   
 * [Replication.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Replication.jl): this file replicates the main table and figures reported in Huggett (1993).
+
+----
+## Tests
+Tests performed to ensure the wellfunctioning of all three steps can be found in the folder [test](https://github.com/loforteg/ECON622-FinalProject/tree/main/test).
+Specifically, I have tested for: ...
 
 
 ----
