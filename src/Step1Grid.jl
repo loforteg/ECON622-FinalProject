@@ -1,4 +1,4 @@
-## Step1 is a simple grid search to find optimal policy function
+## Step1Grid is a simple grid search to find optimal policy function
 
 module Step1Grid
 
