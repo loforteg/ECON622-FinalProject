@@ -1,5 +1,5 @@
 # ECON622-FinalProject
-Final Project for the course ECON622. Replication of Huggett (1993) ([paper](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Huggett%201993)), with simple grid search and endogenous grid search method.
+Final Project for the course ECON622. Replication of Huggett (1993) ([paper](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Huggett%201993.pdf)), with simple grid search and endogenous grid search method.
 
 ----
 ### Table of contents
