@@ -104,6 +104,6 @@ end
 include("Step1Grid.jl")
 
 
-
+export pol_inv, step2
 
 end
