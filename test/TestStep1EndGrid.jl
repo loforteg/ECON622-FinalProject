@@ -22,20 +22,20 @@ include("Step1EndGrid.jl")
     a_size = 100
     A = range(a_lb, a_max, length = a_size)
     A = [A; ]
-    Aprime = copy(A)
+    Aprime = repeat(A, 1, e_size)
 
     # Test 1: check β makes sense
     β = 1.1
-    @test EndGridSearch(Aprime, E, Π, β, q) === nothing
+    @test EndGridSearch(A, E, Π, β, σ, q) === nothing
 
     # Test 2: check transition matrix
     β = 0.9932
     Π = [0.3 0.5
         0.5 0.5]
-    @test EndGridSearch(Aprime, E, Π, β, q) === nothing
+    @test EndGridSearch(A, E, Π, β, σ, q) === nothing
 
     # Test 3: check that the price makes sense
     q = 0.8
-    @test EndGridSearch(Aprime, E, Π, β, q) === nothing
+    @test EndGridSearch(A, E, Π, β, σ, q) === nothing
 
 end
