@@ -27,8 +27,17 @@ function step1(A, E, Π, q, β, σ; v_guess = 0.0, maxT = 600, tol = 0.01)
         - pol_func: optimal policy function
     """
 
+    # Check that discount factor and price make sense
+    @assert β < 1
+    @assert q > β
+
     a_size = length(A)
     e_size = size(E)[1]
+
+    # Check that transition matrix is well defined
+    for e = 1:e_size
+        @assert sum(Π[e,:]) == 1
+    end
 
     v0 = v_guess .* ones(a_size, e_size)
     v_update = zeros(a_size, e_size)
