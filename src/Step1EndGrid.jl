@@ -7,25 +7,29 @@ using BenchmarkTools, Interpolations, Roots
 
 """
     Performs an endogenous search to find the optimal policy function.
+    To do so, 3 functions are nested together:
+    1. RHSEuler: computes the RHS of the Euler equation
+    2. initialpolicy: for a guess value of consumption, finds a'
+    3. EndGridSearch: solves for optimal consumption and a'
     Takes price q as given.
 """
 
 function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
 
     # a is the actual value of assets
-    # aprime is the position of the new assets
+    # aprime is the actual of the new assets
 
     """
     This function computes the RHS of the Euler Equation.
     Inputs:
-        - A: grid of assets today
+        - A: assets today
         - E: exogenous shocks
         - Π: transtion matrix
         - q: price (guessed one)
         - β: discount factor
         - σ: preference parameter
         - a: actual value of assets today
-        - aprime: position of assets tomorrow
+        - aprime: actual value of assets tomorrow
         - Aprimetol: provisional grid of future assets
     Output:
         - RHS: right hand side of the Euler Equation, for 2 exogenous state var.
@@ -33,6 +37,9 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
 
     a_size = length(A)
     e_size = size(E)[1]
+
+    # Create a grid of A multiplied by the length of E
+    Agrid = repeat(A, 1, e_size)
 
     # Define the first derivative of utility function
     # (in the future, make it more general)
@@ -43,9 +50,9 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
 
     for e = 1:e_size
 
-        adoubleprime = LinearInterpolation(A[:, e], Aprimetol[:, e])[aprime]
-        Uprime[e] = up(A[aprime, e] + E[e] - q * adoubleprime)
-        RHS[e] = up(a + E[e] - A[aprime, e] * q) - β * dot(Π[e, :], Uprime)
+        adoubleprime = LinearInterpolation(Agrid[:, e], Aprimetol[:, e]).(aprime)
+        Uprime[e] = up(Agrid[aprime, e] + E[e] - q * adoubleprime)
+        RHS[e] = up(a + E[e] - Agrid[aprime, e] * q) - β * dot(Π[e, :], Uprime)
 
     end
 
@@ -71,8 +78,10 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
     a_size = length(A)
     e_size = size(E)[1]
 
-    Aprime = copy(A)
-    Aprimetol = copy(A) .+ 2*tol
+    # Create a grid of A multiplied by the length of E
+    Agrid = repeat(A, 1, e_size)
+    Aprime = copy(Agrid)
+    Aprimetol = copy(Agrid) .+ 2*tol
 
     # Iteration
     normdiff = Inf
@@ -83,14 +92,14 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
         for a = 1:a_size
             for e = 1:e_size
 
-                FOCaprime(aprime) = RHSEuler(A, E, Π, q, β, σ, A[a, e], aprime, Aprimetol)
+                FOCaprime(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime, Aprimetol)
 
-                if FOCaprime(A[1, e]) > 0.0
-                    Aprime[a, e] = A[1, e]
-                elseif FOCaprime(A[end, e]) < 0.0
-                    Aprime[a, e] = A[end, e]
+                if FOCaprime(Agrid[1, e]) > 0.0
+                    Aprime[a, e] = Agrid[1, e]
+                elseif FOCaprime(Agrid[end, e]) < 0.0
+                    Aprime[a, e] = Agrid[end, e]
                 else
-                    Aprime[a, e] = fzero(FOCaprime, A[1, e], A[end, e])
+                    Aprime[a, e] = fzero(FOCaprime, Agrid[1, e], Agrid[end, e])
                 end
 
             end
@@ -107,18 +116,19 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
 end
 
 
-function EndGridSearch(Aprime, E, Π, β, q; maxT = 600, tol = 0.01)
+function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
 
     """
     Function that finds the optimal policy function.
     Inputs:
-        - Aprime: grid of assets tomorrow
+        - A: assets today
         - E: exogenous shocks
         - Π: transition matrix
         - β: discount factor
+        - σ: preference parameter
         - q: price (guess)
     Output:
-        -
+        - pol_func: optimal policy function
     """
 
     # Define the inverse of the first derivative of utility function
@@ -137,11 +147,15 @@ function EndGridSearch(Aprime, E, Π, β, q; maxT = 600, tol = 0.01)
         @assert sum(Π[e,:]) == 1
     end
 
+    # Compute Aprime: initial grid of next period's assets
+    Aprime = initialpolicy(A, E, Π, β, σ, q)
+
+    # Compute initial consumption (use it as guess for iteration)
     C = Aprime .+ E'
     Cupdate = 0.0 .* similar(Aprime)
     Aupdate = similar(Aprime)
 
-    # Iteration
+    # Iteration to find optimal consumption
     normdiff = Inf
     t = 1
 
@@ -157,23 +171,38 @@ function EndGridSearch(Aprime, E, Π, β, q; maxT = 600, tol = 0.01)
         # Adjust for whether budget constraint binds (only low shock)
         binds = Aprime .< A[:,1]'
         Cupdate[binds] .= (Aprime .+ E' .- Aprime[:,1]' .* q')[binds]
+        # Generate auxiliary matrix for when binding
+        auxbinding = similar(A)
+        for e = 1:e_size
+            auxfunc = LinearInterpolation(A[:, e], Ctilda[:, e])
+            auxbinding[:, e] = auxfunc.(Aprime[:, e])
+        end
+        # Fill Cupdate for binding
+        Cupdate[.!binds] .= auxbinding[.!binds]
 
-        # Finish this!!
-        # Cupdate[.!binds] .= LinearInterpolation()[.!binds]
-
+        # values for next iteration
         t += 1
         normdiff = maximum(abs.(Cupdate - C))
-
-
+        C = copy(Cupdate)
 
     end
 
-    # Finish this too!
-    # Aprime = LinearInterpolation()
+    # Now find the optimal policy function in my original grid
+    pol_func = zeros(a_size, e_size)
+    for e = 1:e_size
+        auxfunc = LinearInterpolation(A[:, e], Aprime[:, e])
+        pol_func[:, e] = auxfunc.(Aprime[:, e])
+    end
 
-    return pol_func = Aprime
+    return pol_func
 
 end
 
+
+
+
+
+
+export RHSEuler, initialpolicy, EndGridSearch
 
 end
