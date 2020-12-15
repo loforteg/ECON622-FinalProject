@@ -84,6 +84,6 @@ function step1(A, E, Π, q, β, σ; v_guess = 0.0, maxT = 600, tol = 0.01)
 
 end
 
-
+export step1
 
 end
