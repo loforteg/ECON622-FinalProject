@@ -68,6 +68,7 @@ Finally, from the budget constraint I derive the optimal choice of assets in the
 I use this solution to update the initial guess, as long as I get convergence of the policy function.
 
 For more information on endogenenous grid method, please refer to the following [notes](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Notes%20on%20Endogenous%20Grid%20Method.pdf).
+Most of the notation used in the code in [Step1EndGrid.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step1EndGrid.jl) is taken from the [notes](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Notes%20on%20Endogenous%20Grid%20Method.pdf).
 
 * [Step2.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Step2.jl): this file performs the second step described in the Computation section.
 In practice, I first define function `pol_inv` which computes the inverse of the policy function.
@@ -93,13 +94,19 @@ I try not to have a "jumpy" update in prices by using the following updating pro
   * if there is excess demand, the new price is equal to the old price plus a fraction of the tolerance level to determine that there is no excess demand;
   * if there is excess supply, the new price is equal to the old price diminished by the tolerance level.
   
-  
 * [Replication.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Replication.jl): this file replicates the main table and figures reported in Huggett (1993).
+For the tables and graphs, please check the results file: [Results](https://github.com/loforteg/ECON622-FinalProject/blob/main/Results.pdf) (it also contains a more detailed explanation of the Huggett (1993) model).
+
+* [Comparison.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Comparison.jl): this file compares the performance of computing the first step using a simple grid search versus using an endogenous grid search methodology.
 
 ----
 ## Tests
 Tests performed to ensure the wellfunctioning of all three steps can be found in the folder [test](https://github.com/loforteg/ECON622-FinalProject/tree/main/test).
-Specifically, I have tested for: ...
+Specifically, you can find the following tests:
+* [TestStep1.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep1.jl): I have checked for a good specification of the preference parameter, the initial guess of prices, the transformation matrix.
+* [TestStep1EndGrid.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep1EndGrid.jl): I have checked again for a good specification of the preference parameter, the initial guess of prices, the transformation matrix.
+* 
+
 
 
 ----
