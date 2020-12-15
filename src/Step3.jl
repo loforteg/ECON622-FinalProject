@@ -112,7 +112,8 @@ end
 
 
 include("Step2.jl")
-include("Step1.jl")
-include("Step1EndGrid.jl")
+include("Step1Grid.jl")
+
+export mktclearing, step3
 
 end
