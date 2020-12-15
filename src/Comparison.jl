@@ -6,7 +6,6 @@ using BenchmarkTools
 β = 0.9932
 σ = 1.5
 
-
 # Exogenous shocks
 eH = 1.0
 eL = 0.1
