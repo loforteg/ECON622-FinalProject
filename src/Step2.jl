@@ -1,9 +1,11 @@
 ## Step2 is iteration to find the stationary distribution
 
-module Step2
+#module Step2
 
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
+include("Step1Grid.jl")
+
 
 """
     Relies on step1 (either with simple grid search or endogenous) and finds
@@ -101,9 +103,7 @@ function step2(A, E, Π, pol_func; tol = 0.01, maxT = 600)
 end
 
 
-include("Step1Grid.jl")
 
+#export pol_inv, step2
 
-export pol_inv, step2
-
-end
+#end
