@@ -65,6 +65,10 @@ function step2(A, E, Π, pol_func; tol = 0.01, maxT = 600)
     a_size = length(A)
     e_size = size(E)[1]
 
+    # Check that everything works
+    @assert size(pol_func)[1] == a_size
+    @assert size(pol_func)[2] == e_size
+
     # Find endogenous position where a' = a
     aBar = findlast((pol_func[:,2] - A) .< tol)
     cut = max(aBar, 2)           # if aBar = 1 then range will not work
