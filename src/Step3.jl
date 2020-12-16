@@ -1,9 +1,13 @@
 ## Step3 is the iteration to find the price q
 
-module Step3
+#module Step3
 
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
+
+
+include("Step2.jl")
+include("Step1Grid.jl")
 
 """
     Relies on step2 and finds the optimal price.
@@ -111,9 +115,7 @@ function step3(A, E, Π, q0, β, σ; maxT = 100, tol_iterations = 0.01,
 end
 
 
-include("Step2.jl")
-include("Step1Grid.jl")
 
-export mktclearing, step3
+#export mktclearing, step3
 
-end
+#end
