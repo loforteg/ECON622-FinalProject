@@ -103,9 +103,9 @@ For the tables and graphs, please check the results file: [Results](https://gith
 ## Tests
 Tests performed to ensure the wellfunctioning of all three steps can be found in the folder [test](https://github.com/loforteg/ECON622-FinalProject/tree/main/test).
 Specifically, you can find the following tests:
-* [TestStep1.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep1.jl): I have checked for a good specification of the preference parameter, the initial guess of prices, the transformation matrix.
+* [TestStep1.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep1.jl): I have checked for a good specification of the preference parameter, the initial guess of prices, the discount factor, and the transformation matrix.
 * [TestStep1EndGrid.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep1EndGrid.jl): I have checked again for a good specification of the preference parameter, the initial guess of prices, the transformation matrix.
-* 
+* [TestStep2.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/test/TestStep2.jl): I have checked for a good specification of the policy function derived in the previous step.
 
 
 
