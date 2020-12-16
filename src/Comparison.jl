@@ -1,4 +1,7 @@
 ## Comparison of exogenous grid search and endogenous grid search
+include("Step1Grid.jl")
+include("Step1EndGrid.jl")
+
 
 using BenchmarkTools
 
@@ -33,8 +36,3 @@ q = 1.1
 
 # Check performance endogenous grid search method
 @btime EndGridSearch(A, E, Π, β, σ, q)
-
-
-
-include("Step1Grid.jl")
-include("Step1EndGrid.jl")
