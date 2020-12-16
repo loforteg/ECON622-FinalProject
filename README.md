@@ -111,4 +111,4 @@ Specifically, you can find the following tests:
 
 ----
 ## References
-Huggett, Mark, *The risk-free rate in heterogeneous-agent incomplete-insurance economies*, Journal of economic Dynamics and Control 17.5-6 (1993): 953-969.
+Huggett, Mark, *The risk-free rate in heterogeneous-agent incomplete-insurance economies*, Journal of economic Dynamics and Control 17.5-6 (1993): 953-969([link](https://github.com/loforteg/ECON622-FinalProject/blob/main/literature/Huggett%201993.pdf))
