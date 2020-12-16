@@ -1,6 +1,6 @@
 ## Step1EndGrid is an endogenous grid search to find optimal policy function
 
-module Step1EndGrid
+#module Step1EndGrid
 
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations, Roots
@@ -43,7 +43,9 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
 
     # Define the first derivative of utility function
     # (in the future, make it more general)
-    up(c) = c.^(-σ)
+    lowerbound = 1E-7
+    up(c::Real) = maximum(c, lowerbound).^(-σ)
+    #up(a, e, ap, q) = ((a + e - ap*q) <= 0) ? -Inf : (a + e - ap*q).^(-σ)
 
     Uprime = zeros(e_size, 1)
     RHS = zeros(e_size, 1)
@@ -51,10 +53,12 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
     for e = 1:e_size
 
         adoubleprime = LinearInterpolation(Agrid[:, e], Aprimetol[:, e]).(aprime)
-        Uprime[e] = up(Agrid[aprime, e] + E[e] - q * adoubleprime)
-        RHS[e] = up(a + E[e] - Agrid[aprime, e] * q) - β * dot(Π[e, :], Uprime)
+        Uprime[e] = up(aprime + E[e] - q * adoubleprime)
+        RHS[e] = up(a + E[e] - aprime * q) - β * dot(Π[e, :], Uprime)
 
     end
+
+    return RHS
 
 end
 
@@ -94,9 +98,9 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
 
                 FOCaprime(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime, Aprimetol)
 
-                if FOCaprime(Agrid[1, e]) > 0.0
+                if FOCaprime(Agrid[1, e])[e] > 0.0
                     Aprime[a, e] = Agrid[1, e]
-                elseif FOCaprime(Agrid[end, e]) < 0.0
+                elseif FOCaprime(Agrid[end, e])[e] < 0.0
                     Aprime[a, e] = Agrid[end, e]
                 else
                     Aprime[a, e] = fzero(FOCaprime, Agrid[1, e], Agrid[end, e])
@@ -135,8 +139,9 @@ function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
     # (in the future, make it more general)
     upinv(B) = B.^(-1/σ)
 
-    # Check that discount factor and price make sense
+    # Check that parameters and price make sense
     @assert β < 1
+    @assert σ > 1
     @assert q > β
 
     a_size = length(A)
@@ -203,6 +208,6 @@ end
 
 
 
-export RHSEuler, initialpolicy, EndGridSearch
+#export RHSEuler, initialpolicy, EndGridSearch
 
-end
+#end
