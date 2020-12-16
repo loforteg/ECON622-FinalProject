@@ -1,9 +1,9 @@
 # Perform some tests on Step1
 
 using Test
-include("Step1.jl")
+include("../src/Step1Grid.jl")
 
-@testset "Step1.jl" begin
+@testset "Step1Grid.jl" begin
 
     # Setting
     β = 0.9932
@@ -15,7 +15,7 @@ include("Step1.jl")
     πHL = 0.5   # e_H | e_L
     Π = [1 - πHL  πHL
         1 - πHH πHH]
-    q0 = 1.3
+    q = 1.3
     σ = 1.5
     a_lb = -2.0
     a_max = 5
@@ -25,20 +25,20 @@ include("Step1.jl")
 
     # Test 1: check β makes sense
     β = 1.1
-    @test step1(A, E, Π, q, β, σ) === nothing
+    @test_throws AssertionError step1(A, E, Π, q, β, σ)
 
     # Test 2: check transition matrix
     β = 0.9932
     Π = [0.3 0.5
-        0.5 0.5]
-    @test step1(A, E, Π, q, β, σ) === nothing
+         0.5 0.5]
+    @test_throws AssertionError step1(A, E, Π, q, β, σ)
 
     # Test 3: check that the price makes sense
     q = 0.8
-    @test step1(A, E, Π, q, β, σ) === nothing
+    @test_throws AssertionError step1(A, E, Π, q, β, σ)
 
     # Test 4: check that σ is appropriate
     σ = 0.9
-    @test step1(A, E, Π, q, β, σ) === nothing
+    @test_throws AssertionError step1(A, E, Π, q, β, σ)
 
 end
