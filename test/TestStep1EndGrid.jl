@@ -38,4 +38,8 @@ include("Step1EndGrid.jl")
     q = 0.8
     @test EndGridSearch(A, E, Π, β, σ, q) === nothing
 
+    # Test 4: check that σ is appropriate
+    σ = 0.9
+    @test EndGridSearch(A, E, Π, β, σ, q) === nothing
+
 end
