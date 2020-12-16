@@ -1,4 +1,4 @@
-## Step1EndGrid is an endogenous grid search to find optimal policy function
+## Step1EndGrid is an endogenous grid search to find the optimal policy function
 
 #module Step1EndGrid
 
@@ -14,7 +14,7 @@ using BenchmarkTools, Interpolations, Roots
     Takes price q as given.
 """
 
-function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
+function RHSEuler(A, E, Π, q, β, σ, a, aprime; tol = 0.01)
 
     # a is the actual value of assets
     # aprime is the actual of the new assets
@@ -41,10 +41,12 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
     # Create a grid of A multiplied by the length of E
     Agrid = repeat(A, 1, e_size)
 
+    Aprimetol = copy(Agrid) .+ 2*tol
+
     # Define the first derivative of utility function
     # (in the future, make it more general)
     lowerbound = 1E-7
-    up(c::Real) = maximum(c, lowerbound).^(-σ)
+    up(c::Real) = (max(c, lowerbound)).^(-σ)
     #up(a, e, ap, q) = ((a + e - ap*q) <= 0) ? -Inf : (a + e - ap*q).^(-σ)
 
     Uprime = zeros(e_size, 1)
@@ -52,8 +54,10 @@ function RHSEuler(A, E, Π, q, β, σ, a, aprime, Aprimetol)
 
     for e = 1:e_size
 
-        adoubleprime = LinearInterpolation(Agrid[:, e], Aprimetol[:, e]).(aprime)
-        Uprime[e] = up(aprime + E[e] - q * adoubleprime)
+        aux = LinearInterpolation(Agrid[:, e], Aprimetol[:, e])
+        adoubleprime = aux(aprime)
+        #adoubleprime = LinearInterpolation(Agrid[:, e], Aprimetol[:, e])(aprime)
+        Uprime[e] = up(aprime .+ E[e] .- q .* adoubleprime)
         RHS[e] = up(a + E[e] - aprime * q) - β * dot(Π[e, :], Uprime)
 
     end
@@ -96,15 +100,25 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
         for a = 1:a_size
             for e = 1:e_size
 
-                FOCaprime(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime, Aprimetol)
+                FOCaprime(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime)
 
                 if FOCaprime(Agrid[1, e])[e] > 0.0
                     Aprime[a, e] = Agrid[1, e]
                 elseif FOCaprime(Agrid[end, e])[e] < 0.0
                     Aprime[a, e] = Agrid[end, e]
                 else
-                    Aprime[a, e] = fzero(FOCaprime, Agrid[1, e], Agrid[end, e])
+                    if e == 1
+                        auxfunc1(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime)[1]
+                        Aprime[a, e] = fzero(auxfunc1, Agrid[175, e])
+                    else
+                        auxfunc2(aprime) = RHSEuler(A, E, Π, q, β, σ, Agrid[a, e], aprime)[2]
+                        Aprime[a, e] = fzero(auxfunc2, Agrid[1, e], Agrid[end, e])
+                    end
                 end
+                # 110-116 may not be working! Check how to adjust it.
+                # Maybe use something different from a bisection method.
+                #    Aprime[a, e] = fzero(FOCaprime, Agrid[1, e], Agrid[end, e])
+                # end
 
             end
         end
