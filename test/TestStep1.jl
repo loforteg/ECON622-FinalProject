@@ -37,4 +37,8 @@ include("Step1.jl")
     q = 0.8
     @test step1(A, E, Π, q, β, σ) === nothing
 
+    # Test 4: check that σ is appropriate
+    σ = 0.9
+    @test step1(A, E, Π, q, β, σ) === nothing
+
 end
