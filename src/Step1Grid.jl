@@ -1,6 +1,6 @@
 ## Step1Grid is a simple grid search to find optimal policy function
 
-module Step1Grid
+#module Step1Grid
 
 using LinearAlgebra, Random, Distributions, Statistics, Plots
 using BenchmarkTools, Interpolations
@@ -27,8 +27,9 @@ function step1(A, E, Π, q, β, σ; v_guess = 0.0, maxT = 600, tol = 0.01)
         - pol_func: optimal policy function
     """
 
-    # Check that discount factor and price make sense
+    # Check that parameters and price make sense
     @assert β < 1
+    @assert σ > 1
     @assert q > β
 
     a_size = length(A)
@@ -84,6 +85,6 @@ function step1(A, E, Π, q, β, σ; v_guess = 0.0, maxT = 600, tol = 0.01)
 
 end
 
-export step1
+#export step1
 
-end
+#end
