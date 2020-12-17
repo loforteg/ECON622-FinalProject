@@ -141,13 +141,13 @@ function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
     @assert σ > 1
     @assert q > β
 
+    a_size = length(A)
+    e_size = size(E)[1]
+
     # Check that transition matrix is well defined
     for e = 1:e_size
         @assert sum(Π[e,:]) == 1
     end
-
-    a_size = length(A)
-    e_size = size(E)[1]
 
     # Define the first derivative of utility function and its inverse
     # (in the future, make it more general)
