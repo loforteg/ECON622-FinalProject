@@ -16,8 +16,8 @@ using BenchmarkTools, Interpolations, Roots
 
 function RHSEuler(A, E, Π, q, β, σ, e, avalue, aprime; tol = 0.01)
 
-    # a is the actual value of assets
-    # aprime is the actual of the new assets
+    # avalue is the actual value of assets
+    # aprime is the actual value of the new assets
 
     """
     This function computes the RHS of the Euler Equation.
@@ -29,7 +29,7 @@ function RHSEuler(A, E, Π, q, β, σ, e, avalue, aprime; tol = 0.01)
         - β: discount factor
         - σ: preference parameter
         - e: position parameter for the shock (position, not value)
-        - a: actual value of assets today (value, not position)
+        - avalue: actual value of assets today (value, not position)
         - aprime: actual value of assets tomorrow
         - Aprimetol: provisional grid of future assets
     Output:
@@ -58,7 +58,6 @@ function RHSEuler(A, E, Π, q, β, σ, e, avalue, aprime; tol = 0.01)
     temp = Uprime .* ones(e_size, 1)
     temp2 = (Π[e, :]' * temp)[1,1]
     RHS = up(avalue + E[e] - aprime * q) - β * temp2
-
 
     return RHS
 
