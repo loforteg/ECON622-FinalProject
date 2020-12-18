@@ -121,7 +121,7 @@ function initialpolicy(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
 end
 
 
-function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
+function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.10)
 
     """
     Function that finds the optimal policy function.
@@ -160,7 +160,14 @@ function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
     Aprime = initialpolicy(A, E, Π, β, σ, q)
 
     # Compute initial consumption (use it as guess for iteration)
+    # Remember that it cannot be negative
     C = Aprime .+ E'
+    for a = 1:a_size
+        for e = 1:e_size
+            C[a, e] = (C[a, e] <= 0) ? 0.0 : C[a,e]
+        end
+    end
+
     Cupdate = 0.0 .* similar(Aprime)
     Aupdate = similar(Aprime)
 
@@ -170,16 +177,21 @@ function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
 
     while normdiff > tol && t <= maxT
 
-        # Find Ctilda from the Euler Equation
+        # Find Ctilda from the Euler Equation (weakly positive)
         B = β .* up(C) * Π'
         Ctilda = upinv(B ./ q)
+        for a = 1:a_size
+            for e = 1:e_size
+                Ctilda[a, e] = (Ctilda[a, e] <= 0) ? 0.0 : Ctilda[a,e]
+            end
+        end
 
         # Solve for A from the budget constraint
         A = Ctilda + Aprime .* q .- E'
 
         # Adjust for whether budget constraint binds (only low shock)
-        binds = Aprime .< A[:,1]
-        Cupdate[binds] .= (Aprime .+ E' .- Aprime[:,1] .* q)[binds]
+        binds = Aprime .< A[1,:]'
+        Cupdate[binds] .= (Aprime .+ E' .- Aprime[1,:]' .* q)[binds]
         # Generate auxiliary matrix for when binding
         auxbinding = similar(A)
         for e = 1:e_size
@@ -188,6 +200,13 @@ function EndGridSearch(A, E, Π, β, σ, q; maxT = 600, tol = 0.01)
         end
         # Fill Cupdate for binding
         Cupdate[.!binds] .= auxbinding[.!binds]
+
+        # Replace negative consumption with 0, if exists
+        for a = 1:a_size
+            for e = 1:e_size
+                Cupdate[a, e] = (Cupdate[a, e] <= 0) ? 0.0 : Cupdate[a,e]
+            end
+        end
 
         # values for next iteration
         t += 1
