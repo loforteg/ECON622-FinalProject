@@ -99,7 +99,7 @@ The results obtained in this file differ at the third decimal point from the ori
 For the tables and graphs, please check the file [Results](https://github.com/loforteg/ECON622-FinalProject/blob/main/Results.pdf), which also contains a more detailed explanation of the Huggett (1993) model.
 
 * [Comparison.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Comparison.jl): this file compares the performance of computing the first step using a simple grid search versus using an endogenous grid search methodology.
-The endogenous grid method does seem to be faster.
+The endogenous grid method does seem to be faster: 965 ms compared to 25 s.
 
 ----
 ## Tests
