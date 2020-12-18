@@ -98,6 +98,7 @@ I try not to have a "jumpy" update in prices by using the following updating pro
 For the tables and graphs, please check the results file: [Results](https://github.com/loforteg/ECON622-FinalProject/blob/main/Results.pdf) (it also contains a more detailed explanation of the Huggett (1993) model).
 
 * [Comparison.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Comparison.jl): this file compares the performance of computing the first step using a simple grid search versus using an endogenous grid search methodology.
+The endogenous grid method does seem to be faster.
 
 ----
 ## Tests
