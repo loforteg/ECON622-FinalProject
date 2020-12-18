@@ -75,8 +75,8 @@ function step2(A, E, Π, pol_func; tol = 0.01, maxT = 600)
 
     aux1 = range(zero(eltype(A)), one(eltype(A))/e_size, length = cut)
     aux2 = ones(eltype(A), a_size - cut)/e_size
-    aux = [aux1; aux2]           # 350x1
-    F0 = repeat(aux, 1, e_size)  # 350x2
+    aux = [aux1; aux2]
+    F0 = repeat(aux, 1, e_size)
 
     F_update = copy(F0)
 
