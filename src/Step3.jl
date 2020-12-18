@@ -53,7 +53,7 @@ function step3(A, E, Π, q0, β, σ; maxT = 100, tol_iterations = 0.01,
 
     """
     Function that finds the optimal price q.
-    Relies on market in the update procedure.
+    Relies on market in the updating procedure.
     Inputs:
         - A: set of assets
         - E: set of shocks
