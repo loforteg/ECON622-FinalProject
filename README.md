@@ -95,7 +95,8 @@ I try not to have a "jumpy" update in prices by using the following updating pro
   * if there is excess supply, the new price is equal to the old price diminished by the tolerance level.
   
 * [Replication.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Replication.jl): this file replicates the main table and figures reported in Huggett (1993).
-For the tables and graphs, please check the results file: [Results](https://github.com/loforteg/ECON622-FinalProject/blob/main/Results.pdf) (it also contains a more detailed explanation of the Huggett (1993) model).
+The results obtained in this file differ at the third decimal point from the original results obtained in Huggett (1993).
+For the tables and graphs, please check the file [Results](https://github.com/loforteg/ECON622-FinalProject/blob/main/Results.pdf), which also contains a more detailed explanation of the Huggett (1993) model.
 
 * [Comparison.jl](https://github.com/loforteg/ECON622-FinalProject/blob/main/src/Comparison.jl): this file compares the performance of computing the first step using a simple grid search versus using an endogenous grid search methodology.
 The endogenous grid method does seem to be faster.
